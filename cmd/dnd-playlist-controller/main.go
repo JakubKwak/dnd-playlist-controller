@@ -21,14 +21,16 @@ func main() {
 		error(err.Error())
 	}
 
+	// poopy stinky butt
 	user32 := syscall.MustLoadDLL("user32")
 	defer user32.Release()
 
-	keys, err := hotkey.Register(user32)
+	hwnd := hotkey.GiveSimpleWindowPls()
+	keys, err := hotkey.Register(user32, hwnd)
 	if err != nil {
 		error(fmt.Sprintf("hot keys in my area: %s", err))
 	}
-	hotkey.Listen(user32, keys, daddy)
+	hotkey.Listen(user32, keys, daddy, hwnd)
 }
 
 func error(err string) {

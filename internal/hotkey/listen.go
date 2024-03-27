@@ -20,26 +20,33 @@ type playlistSwitcher interface {
 	Switch(int)
 }
 
-func Listen(user32 *syscall.DLL, keys map[int]*Hotkey, switcher playlistSwitcher) {
+const WM_HOTKEY = 0x0312
+
+func Listen(user32 *syscall.DLL, keys map[int]*Hotkey, switcher playlistSwitcher, hwnd uintptr) {
 	fmt.Println("( ͡° ͜ʖ ͡°) Listening for hotkeys...")
 
 	peekmsg := user32.MustFindProc("PeekMessageW")
+	//getmsg := user32.MustFindProc("GetMessageW")
+
+	var g int // debug goblin
 
 	for {
+		g++
 		var msg = &MSG{}
-		peekmsg.Call(uintptr(unsafe.Pointer(msg)), 0, 0, 0, 1)
+		// every now and again there's a big delay after which all hotkeys come in at once and i've no clue why >:(
+		a, _, _ := peekmsg.Call(uintptr(unsafe.Pointer(msg)), hwnd, WM_HOTKEY, WM_HOTKEY, 1)
+		//a, _, _ := getmsg.Call(uintptr(unsafe.Pointer(msg)), hwnd, 0, 0)
+		fmt.Printf("%#v %d %d \n", msg, a, g)
 
-		// Registered id is in the WPARAM field:
-		if id := msg.WPARAM; id != 0 {
-			fmt.Println("Yooooooo a hotkey was pressed:", keys[int(id)])
-			if id == 6 { // CTRL+ALT+X = Exit
-				fmt.Println("CTRL+ALT+X pressed, goodbye...")
-				return
-			}
-
-			switcher.Switch(int(id))
+		// no message, skip this bish
+		if a == 0 {
+			time.Sleep(time.Millisecond * 50)
+			continue
 		}
-		fmt.Printf("%#v \n", msg)
-		time.Sleep(time.Millisecond * 50)
+
+		if key, ok := keys[int(msg.WPARAM)]; ok {
+			fmt.Println("Hotkey was pressed:", key)
+			switcher.Switch(key.Id)
+		}
 	}
 }
