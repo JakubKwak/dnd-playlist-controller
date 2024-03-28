@@ -16,19 +16,29 @@ func main() {
 		error(fmt.Sprintf("Could not load env: %s", err))
 	}
 
-	daddy, err := music.NewSwitcher(music.SpotifyClient())
+	client, err := music.SpotifyClient()
 	if err != nil {
 		error(err.Error())
 	}
+
+	daddy, err := music.NewSwitcher(client)
+	if err != nil {
+		error(err.Error())
+	}
+
+	// daddy := music.PoopSwither()
 
 	// poopy stinky butt
 	user32 := syscall.MustLoadDLL("user32")
 	defer user32.Release()
 
-	hwnd := hotkey.GiveSimpleWindowPls()
+	hwnd, err := hotkey.GiveSimpleWindowPls(user32)
+	if err != nil {
+		error(err.Error())
+	}
 	keys, err := hotkey.Register(user32, hwnd)
 	if err != nil {
-		error(fmt.Sprintf("hot keys in my area: %s", err))
+		error(fmt.Sprintf("hotkey cringe %s", err))
 	}
 	hotkey.Listen(user32, keys, daddy, hwnd)
 }
