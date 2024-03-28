@@ -29,7 +29,6 @@ func Listen(user32 *syscall.DLL, keys map[int]*Hotkey, switcher playlistSwitcher
 
 	var g int // debug goblin
 	var debug bool
-	debug = true
 
 	for {
 		g++

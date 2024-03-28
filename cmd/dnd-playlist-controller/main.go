@@ -16,7 +16,12 @@ func main() {
 		error(fmt.Sprintf("Could not load env: %s", err))
 	}
 
-	daddy, err := music.NewSwitcher(music.SpotifyClient())
+	client, err := music.SpotifyClient()
+	if err != nil {
+		error(err.Error())
+	}
+
+	daddy, err := music.NewSwitcher(client)
 	if err != nil {
 		error(err.Error())
 	}
