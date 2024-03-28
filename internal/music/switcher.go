@@ -13,6 +13,12 @@ type Switcher struct {
 	ctx          context.Context
 }
 
+// create empty switcher for debug shit
+func PoopSwither() *Switcher {
+	uris := make(map[int]string, 0)
+	return &Switcher{playlistURIs: uris, ctx: context.Background()}
+}
+
 func NewSwitcher(client *spotify.Client) (*Switcher, error) {
 	playlistURIs, err := loadPlaylistURIs()
 	if err != nil {

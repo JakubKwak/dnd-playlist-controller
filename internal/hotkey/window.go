@@ -6,13 +6,8 @@ import (
 	"unsafe"
 )
 
-// todo get rid >:(
-var (
-	user32             = syscall.NewLazyDLL("user32.dll")
-	procCreateWindowEx = user32.NewProc("CreateWindowExW")
-)
-
 func createWindow(
+	user32 *syscall.DLL,
 	dwExStyle uint32,
 	lpClassName, lpWindowName *uint16,
 	dwStyle uint32,
@@ -20,6 +15,8 @@ func createWindow(
 	hWndParent, hMenu, hInstance uintptr,
 	lpParam unsafe.Pointer,
 ) uintptr {
+	procCreateWindowEx := user32.MustFindProc("CreateWindowExW")
+
 	ret, _, _ := procCreateWindowEx.Call(
 		uintptr(dwExStyle),
 		uintptr(unsafe.Pointer(lpClassName)),
@@ -38,12 +35,13 @@ func createWindow(
 }
 
 // create a simple window so we can listen to messages only for this app and not all messages on this thread
-func GiveSimpleWindowPls() uintptr {
+func GiveSimpleWindowPls(user32 *syscall.DLL) (uintptr, error) {
 	var hwnd uintptr
 	className, _ := syscall.UTF16PtrFromString("STATIC")
-	windowName, _ := syscall.UTF16PtrFromString("Sample Window")
+	windowName, _ := syscall.UTF16PtrFromString("Simple Window")
 
 	hwnd = createWindow(
+		user32,
 		0,
 		className,
 		windowName,
@@ -61,7 +59,7 @@ func GiveSimpleWindowPls() uintptr {
 	if hwnd != 0 {
 		fmt.Println("HWND:", hwnd)
 	} else {
-		fmt.Println("window fricking gone man")
+		return 0, fmt.Errorf("window fricking gone man")
 	}
-	return hwnd
+	return hwnd, nil
 }
