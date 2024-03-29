@@ -38,15 +38,10 @@ func Listen(user32 *syscall.DLL, keys map[int]*Hotkey, switcher playlistSwitcher
 			fmt.Printf("%#v %d %d \n", msg, a, g)
 		}
 
-		// no message, skip this bish
-		if a == 0 {
-			time.Sleep(time.Millisecond * 500) // wait for 500 otherwise it commits cringe
-			continue
-		}
-
-		if key, ok := keys[int(msg.WPARAM)]; ok {
+		if key, ok := keys[int(msg.WPARAM)]; ok && a != 0 {
 			fmt.Println("Hotkey was pressed:", key)
 			switcher.Switch(key.Id)
 		}
+		time.Sleep(time.Millisecond * 100)
 	}
 }

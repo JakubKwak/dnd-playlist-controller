@@ -5,6 +5,6 @@ Need .env and playlists.json
 
 Run on windows:
 ```
-go build -o bin/dnd-playlist-controller.exe ./cmd/dnd-playlist-controller/
-bin/dnd-playlist-controller.exe
+go build -o bin\dnd-playlist-controller.exe .\cmd\dnd-playlist-controller\
+bin\dnd-playlist-controller.exe
 ```
