@@ -5,6 +5,7 @@ import (
 	"dnd-playlist-controller/internal/music"
 	"fmt"
 	"log"
+	"runtime"
 	"syscall"
 
 	"github.com/joho/godotenv"
@@ -32,6 +33,7 @@ func main() {
 	user32 := syscall.MustLoadDLL("user32")
 	defer user32.Release()
 
+	runtime.LockOSThread()
 	hwnd, err := hotkey.GiveSimpleWindowPls(user32)
 	if err != nil {
 		error(err.Error())

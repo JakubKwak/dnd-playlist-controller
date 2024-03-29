@@ -16,7 +16,8 @@ func saveToken(token *oauth2.Token) error {
 		return fmt.Errorf("couldn't convert token to json now wtf do we do: %w", err)
 	}
 
-	err = os.WriteFile(tokenFile, jsonStr, 0777)
+	// extremely secure token saving
+	err = os.WriteFile(tokenFile, jsonStr, 0777) // 77777777777777
 	if err != nil {
 		return fmt.Errorf("cringefest when writing file to my ass: %w", err)
 	}
