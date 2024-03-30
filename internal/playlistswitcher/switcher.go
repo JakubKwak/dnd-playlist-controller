@@ -1,4 +1,4 @@
-package music
+package playlistswitcher
 
 import (
 	"context"
@@ -19,16 +19,11 @@ func PoopSwither() *Switcher {
 	return &Switcher{playlistURIs: uris, ctx: context.Background()}
 }
 
-func NewSwitcher(client *spotify.Client) (*Switcher, error) {
-	playlistURIs, err := loadPlaylistURIs()
-	if err != nil {
-		return nil, err
-	}
-
-	return &Switcher{playlistURIs: playlistURIs, client: client, ctx: context.Background()}, nil
+func NewSwitcher(client *spotify.Client, playlistURIs map[int]string) *Switcher {
+	return &Switcher{playlistURIs: playlistURIs, client: client, ctx: context.Background()}
 }
 
-func (s *Switcher) Switch(id int) {
+func (s *Switcher) HandleHotkey(id int) {
 	uri, ok := s.playlistURIs[id]
 	if !ok {
 		return

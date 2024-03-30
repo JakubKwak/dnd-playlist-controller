@@ -16,13 +16,13 @@ type MSG struct {
 	POINT  struct{ X, Y int64 }
 }
 
-type playlistSwitcher interface {
-	Switch(int)
+type HotkeyHandler interface {
+	HandleHotkey(id int)
 }
 
 const WM_HOTKEY = 0x0312
 
-func Listen(user32 *syscall.DLL, keys map[int]*Hotkey, switcher playlistSwitcher, hwnd uintptr) {
+func Listen(user32 *syscall.DLL, keys map[int]*Hotkey, handler HotkeyHandler, hwnd uintptr) {
 	fmt.Println("( ͡° ͜ʖ ͡°) Listening for hot keys in my area...")
 
 	peekmsg := user32.MustFindProc("PeekMessageW")
@@ -40,7 +40,7 @@ func Listen(user32 *syscall.DLL, keys map[int]*Hotkey, switcher playlistSwitcher
 
 		if key, ok := keys[int(msg.WPARAM)]; ok && a != 0 {
 			fmt.Println("Hotkey was pressed:", key)
-			switcher.Switch(key.Id)
+			handler.HandleHotkey(key.Id)
 		}
 		time.Sleep(time.Millisecond * 100)
 	}

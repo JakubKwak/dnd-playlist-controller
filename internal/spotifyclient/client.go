@@ -1,4 +1,4 @@
-package music
+package spotifyclient
 
 import (
 	"context"
@@ -18,9 +18,10 @@ var (
 	state = "jk-dnd-playlist-controller" // love security n shit
 )
 
-func SpotifyClient() (*spotify.Client, error) {
+func New() (*spotify.Client, error) {
 	auth = spotifyauth.New(spotifyauth.WithRedirectURL(redirectURI), spotifyauth.WithScopes(spotifyauth.ScopeUserReadPrivate, spotifyauth.ScopeUserModifyPlaybackState))
 
+	// try to load an existing user from token.json if it exists
 	existingClient, err := clientFromExistingToken()
 	if err == nil && existingClient != nil {
 		return existingClient, nil
@@ -62,8 +63,6 @@ func clientFromNewToken() (*spotify.Client, error) {
 
 	// wait for auth to complete
 	client := <-ch
-	// close the server, we only needed it for auth
-	//srv.Close()
 
 	// use the client to make calls that require authorization
 	user, err := client.CurrentUser(context.Background())
@@ -86,6 +85,7 @@ func completeAuth(w http.ResponseWriter, r *http.Request) {
 		log.Fatalf("State mismatch: %s != %s\n", st, state)
 	}
 
+	// save the token so we can skip auth next time
 	err = saveToken(tok)
 	if err != nil {
 		fmt.Printf("couldn't save the token: %s", err)

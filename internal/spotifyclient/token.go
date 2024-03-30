@@ -1,4 +1,4 @@
-package music
+package spotifyclient
 
 import (
 	"encoding/json"
@@ -17,7 +17,7 @@ func saveToken(token *oauth2.Token) error {
 	}
 
 	// extremely secure token saving
-	err = os.WriteFile(tokenFile, jsonStr, 0777) // 77777777777777
+	err = os.WriteFile(tokenFile, jsonStr, 0775)
 	if err != nil {
 		return fmt.Errorf("cringefest when writing file to my ass: %w", err)
 	}

@@ -3,6 +3,7 @@ package hotkey
 import (
 	"bytes"
 	"fmt"
+	"strings"
 )
 
 const (
@@ -12,10 +13,24 @@ const (
 	ModWin
 )
 
+var (
+	modsMap = map[string]int{
+		"alt":   ModAlt,
+		"ctrl":  ModCtrl,
+		"shift": ModShift,
+		"win":   ModWin,
+	}
+)
+
 type Hotkey struct {
-	Id        int // Unique id to match with playlist in playlists.json
+	Id        int // Unique id
 	Modifiers int // Mask of modifiers
 	KeyCode   int // Key code, e.g. 'A'
+}
+
+func ParseMod(str string) (int, bool) {
+	c, ok := modsMap[strings.ToLower(str)]
+	return c, ok
 }
 
 // returns "Hotkey[Id: 1, Alt+Ctrl+O]" so my caveman brain can read it
