@@ -37,4 +37,4 @@ go build -o bin\dnd-playlist-controller.exe .\cmd\dnd-playlist-controller\
 
 First time you run it, it will print a URL in the console window. Copy paste it into your browser and login with your Spotify account. Once done and you see an empty webpage, you can close the browser.
 
-To avoid having to do this every time I save the auth token in a json file in the repo root folder (token.json). It's not very secure, but who cares. If auth every tbreaks for some reason just delete that file i guess
+To avoid having to do this every time I save the auth token in a json file in the repo root folder (token.json). It's not very secure, but who cares. If auth ever breaks for some reason just delete that file i guess
