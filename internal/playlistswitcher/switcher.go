@@ -14,7 +14,7 @@ type Switcher struct {
 }
 
 // create empty switcher for debug shit
-func PoopSwither() *Switcher {
+func FakeSwitcher() *Switcher {
 	uris := make(map[int]string, 0)
 	return &Switcher{playlistURIs: uris, ctx: context.Background()}
 }

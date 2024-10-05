@@ -32,9 +32,8 @@ func main() {
 
 	// create the playlist switcher
 	switcher := playlistswitcher.NewSwitcher(client, playlistURIs)
-	// switcher := music.PoopSwither()
+	// switcher := music.FakeSwitcher()
 
-	// poopy stinky butt
 	user32 := syscall.MustLoadDLL("user32")
 	defer user32.Release()
 
