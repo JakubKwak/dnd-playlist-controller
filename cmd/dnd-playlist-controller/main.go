@@ -1,13 +1,11 @@
 package main
 
 import (
-	"dnd-playlist-controller/internal/hotkey"
+	"dnd-playlist-controller/internal/keybind"
 	"dnd-playlist-controller/internal/playlistswitcher"
 	"dnd-playlist-controller/internal/spotifyclient"
 	"fmt"
 	"log"
-	"runtime"
-	"syscall"
 
 	"github.com/joho/godotenv"
 )
@@ -24,29 +22,16 @@ func main() {
 		error(err.Error())
 	}
 
-	// load playlist URIs and their hotkeys from JSON
-	playlistURIs, hotkeys, err := playlistswitcher.LoadPlaylistHotkeys()
-	if err != nil {
-		error(err.Error())
-	}
-
 	// create the playlist switcher
-	switcher := playlistswitcher.NewSwitcher(client, playlistURIs)
-	// switcher := music.FakeSwitcher()
+	switcher := playlistswitcher.NewSwitcher(client)
 
-	user32 := syscall.MustLoadDLL("user32")
-	defer user32.Release()
-
-	// lock thread, as registering hotkeys is thread-specific
-	runtime.LockOSThread()
-	hwnd, err := hotkey.DefaultWindow(user32)
+	// load playlist URIs and their hotkeys from JSON
+	hotkeys, err := playlistswitcher.InitPlaylistHotkeys(switcher)
 	if err != nil {
 		error(err.Error())
 	}
-	if err = hotkey.Register(user32, hwnd, hotkeys); err != nil {
-		error(fmt.Sprintf("hotkey error %s", err))
-	}
-	hotkey.Listen(user32, hotkeys, switcher, hwnd)
+
+	keybind.Register(hotkeys)
 }
 
 func error(err string) {

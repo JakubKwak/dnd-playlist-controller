@@ -8,26 +8,20 @@ import (
 )
 
 type Switcher struct {
-	playlistURIs map[int]string
-	client       *spotify.Client
-	ctx          context.Context
+	client *spotify.Client
+	ctx    context.Context
 }
 
 // empty switcher, used for debugging
 func FakeSwitcher() *Switcher {
-	uris := make(map[int]string, 0)
-	return &Switcher{playlistURIs: uris, ctx: context.Background()}
+	return &Switcher{ctx: context.Background()}
 }
 
-func NewSwitcher(client *spotify.Client, playlistURIs map[int]string) *Switcher {
-	return &Switcher{playlistURIs: playlistURIs, client: client, ctx: context.Background()}
+func NewSwitcher(client *spotify.Client) *Switcher {
+	return &Switcher{client: client, ctx: context.Background()}
 }
 
-func (s *Switcher) HandleHotkey(id int) {
-	uri, ok := s.playlistURIs[id]
-	if !ok {
-		return
-	}
+func (s *Switcher) SwitchPlaylist(uri string) {
 	spotifyUri := (spotify.URI)("spotify:playlist:" + uri)
 	fmt.Printf("Switching to playlist: %s\n", spotifyUri)
 
