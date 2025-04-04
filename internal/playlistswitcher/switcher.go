@@ -13,7 +13,7 @@ type Switcher struct {
 	ctx          context.Context
 }
 
-// create empty switcher for debug shit
+// empty switcher, used for debugging
 func FakeSwitcher() *Switcher {
 	uris := make(map[int]string, 0)
 	return &Switcher{playlistURIs: uris, ctx: context.Background()}

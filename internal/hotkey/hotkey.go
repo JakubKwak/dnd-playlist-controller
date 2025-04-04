@@ -33,7 +33,7 @@ func ParseMod(str string) (int, bool) {
 	return c, ok
 }
 
-// returns "Hotkey[Id: 1, Alt+Ctrl+O]" so my caveman brain can read it
+// returns "Hotkey[Id: 1, Alt+Ctrl+O]" for logging
 func (h *Hotkey) String() string {
 	mod := &bytes.Buffer{}
 	if h.Modifiers&ModAlt != 0 {

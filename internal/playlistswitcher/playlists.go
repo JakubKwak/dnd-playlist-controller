@@ -17,7 +17,6 @@ type PlaylistHotkey struct {
 
 const hotkeysFile = "hotkeys.json"
 
-// hello i am under the water please help me
 func LoadPlaylistHotkeys() (map[int]string, map[int]*hotkey.Hotkey, error) {
 	var playlists []PlaylistHotkey
 	file, err := os.Open(hotkeysFile)
@@ -70,7 +69,7 @@ func addModifiers(mods []string) (int, error) {
 	for _, mod := range mods {
 		val, ok := hotkey.ParseMod(mod)
 		if !ok {
-			return 0, fmt.Errorf("%s is not a valid modifier :(", mod)
+			return 0, fmt.Errorf("%s is not a valid modifier", mod)
 		}
 		total += val
 	}
