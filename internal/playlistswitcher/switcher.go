@@ -27,6 +27,6 @@ func (s *Switcher) SwitchPlaylist(uri string) {
 
 	err := s.client.PlayOpt(s.ctx, &spotify.PlayOptions{PlaybackContext: &spotifyUri})
 	if err != nil {
-		fmt.Printf("i shid and fard: %s", err)
+		fmt.Printf("i shid and fard: %s\n", err)
 	}
 }

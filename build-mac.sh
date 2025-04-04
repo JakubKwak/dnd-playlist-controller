@@ -1,0 +1,1 @@
+go build -a -o bin/mac-dpc ./cmd/dnd-playlist-controller-mac
