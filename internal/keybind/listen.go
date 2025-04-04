@@ -26,7 +26,7 @@ func registerHotkeys(keys []*Keybind) {
 			defer wg.Done()
 			err := listenHotkey(key)
 			if err != nil {
-				fmt.Printf("Error registering hotkey: %s", err)
+				fmt.Printf("Error registering hotkey (%s): %s", key.FriendlyName, err)
 			}
 		}()
 	}
@@ -42,7 +42,7 @@ func listenHotkey(key *Keybind) error {
 		return nil
 	}
 	defer hk.Unregister()
-	fmt.Printf("Listening for hotkey: %d\n", key.Key) // todo pretty print
+	fmt.Printf("Listening for hotkey: %s\n", key.FriendlyName)
 
 	sigChan := make(chan os.Signal, 1)
 	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)

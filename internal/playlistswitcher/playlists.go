@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"io"
 	"os"
+
+	"golang.design/x/hotkey"
 )
 
 type PlaylistHotkey struct {
@@ -16,7 +18,7 @@ type PlaylistHotkey struct {
 
 const hotkeysFile = "hotkeys.json"
 
-func InitPlaylistHotkeys(switcher *Switcher) ([]*keybind.Keybind, error) {
+func InitPlaylistHotkeys(switcher *Switcher, keyMap map[string]hotkey.Key, modMap map[string]hotkey.Modifier) ([]*keybind.Keybind, error) {
 	var playlists []PlaylistHotkey
 	file, err := os.Open(hotkeysFile)
 	if err != nil {
@@ -41,6 +43,8 @@ func InitPlaylistHotkeys(switcher *Switcher) ([]*keybind.Keybind, error) {
 		hkey, err := keybind.NewKeybind(
 			playlist.Key,
 			playlist.Modifiers,
+			keyMap,
+			modMap,
 			handleFunc,
 		)
 		if err != nil {

@@ -26,15 +26,35 @@ Create a hotkeys.json file (see hotkeys-example.json) to bind hotkeys to playlis
     ...
 ]
 ```
-Run build.bat to build the binary, then run.bat to launch the program.
+
 
 To build and run manually:
 
+### WINDOWS:
+
+Run run-win.bat from console or by double-clicking.
+To rebuild, use build-win.bat.
+
+Or rebuild and run manually with:
+
 ```
-go build -o bin\dnd-playlist-controller.exe .\cmd\dnd-playlist-controller\
-.\bin\dnd-playlist-controller.exe
+go build -o bin\win-dpc.exe .\cmd\dnd-playlist-controller-win
+.\bin\win-dpc.exe
 ```
+
+### MAC:
+
+Run run-mac.sh from a terminal window.
+To rebuild, use build-mac.sh.
+
+Or rebuild and run manually with:
+
+```
+go build -a -o bin/mac-dpc ./cmd/dnd-playlist-controller-mac
+./bin/mac-dpc
+```
+
 
 First time you run it, it will print a URL in the console window. Copy paste it into your browser and login with your Spotify account. Once done and you see an empty webpage, you can close the browser.
 
-To avoid having to do this every time I save the auth token in a json file in the repo root folder (token.json). It's not very secure, but who cares. If auth ever breaks for some reason just delete that file i guess
+To avoid having to do this every time I save the auth token in a json file in the repo root folder (token.json). It's not very secure, but fine for my use case. If the auth ever expires or breaks for some reason just delete that file

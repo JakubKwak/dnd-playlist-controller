@@ -1,1 +1,0 @@
-go build -o bin\dnd-playlist-controller.exe .\cmd\dnd-playlist-controller\

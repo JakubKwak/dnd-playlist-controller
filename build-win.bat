@@ -1,0 +1,1 @@
+go build -o bin\win-dpc.exe .\cmd\dnd-playlist-controller-win\
