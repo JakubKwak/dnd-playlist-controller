@@ -39,12 +39,12 @@ func main() {
 
 	// lock thread, as registering hotkeys is thread-specific
 	runtime.LockOSThread()
-	hwnd, err := hotkey.GiveSimpleWindowPls(user32)
+	hwnd, err := hotkey.DefaultWindow(user32)
 	if err != nil {
 		error(err.Error())
 	}
 	if err = hotkey.Register(user32, hwnd, hotkeys); err != nil {
-		error(fmt.Sprintf("hotkey cringe %s", err))
+		error(fmt.Sprintf("hotkey error %s", err))
 	}
 	hotkey.Listen(user32, hotkeys, switcher, hwnd)
 }

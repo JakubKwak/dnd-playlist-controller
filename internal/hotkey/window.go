@@ -35,7 +35,7 @@ func createWindow(
 }
 
 // create a simple window so we can listen to messages only for this app and not all messages on this thread
-func GiveSimpleWindowPls(user32 *syscall.DLL) (uintptr, error) {
+func DefaultWindow(user32 *syscall.DLL) (uintptr, error) {
 	var hwnd uintptr
 	className, _ := syscall.UTF16PtrFromString("STATIC")
 	windowName, _ := syscall.UTF16PtrFromString("Simple Window")
@@ -59,7 +59,7 @@ func GiveSimpleWindowPls(user32 *syscall.DLL) (uintptr, error) {
 	if hwnd != 0 {
 		fmt.Println("HWND:", hwnd)
 	} else {
-		return 0, fmt.Errorf("window fricking gone man")
+		return 0, fmt.Errorf("window vanished")
 	}
 	return hwnd, nil
 }
