@@ -2,9 +2,9 @@
 Small app to allow playlist switching using hotkeys for running my DND campaign
 
 ## Requirements
-- Windows OS
+- Windows or Mac (Linux currently not supported)
 - Spotify Dev application ID and Secret
-- If you plan to compile the binary yourself, you'll need Go 1.22.1
+- If you plan to compile the binary yourself, you'll need Go 1.22.1+
 
 ## Usage
 Create a .env file in the root of this project, and populate it with SPOTIFY_ID and SPOTIFY_SECRET
