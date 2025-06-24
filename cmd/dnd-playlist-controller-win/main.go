@@ -11,21 +11,16 @@ import (
 )
 
 func main() {
-	// load env file
 	if err := godotenv.Load(".env"); err != nil {
 		error(fmt.Sprintf("Could not load env: %s", err))
 	}
 
-	// create spotify client
 	client, err := spotifyclient.New()
 	if err != nil {
 		error(err.Error())
 	}
-
-	// create the playlist switcher
+	
 	switcher := playlistswitcher.NewSwitcher(client)
-
-	// get OS specific key maps
 	keyMap := getKeyMap()
 	modMap := getModMap()
 

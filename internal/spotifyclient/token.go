@@ -13,13 +13,13 @@ const tokenFile = "token.json"
 func saveToken(token *oauth2.Token) error {
 	jsonStr, err := json.Marshal(token)
 	if err != nil {
-		return fmt.Errorf("couldn't convert token to json now wtf do we do: %w", err)
+		return fmt.Errorf("couldn't marshal token: %w", err)
 	}
 
 	// extremely secure token saving
 	err = os.WriteFile(tokenFile, jsonStr, 0775)
 	if err != nil {
-		return fmt.Errorf("cringefest when writing file to my ass: %w", err)
+		return fmt.Errorf("couldn't save token file: %w", err)
 	}
 
 	return nil

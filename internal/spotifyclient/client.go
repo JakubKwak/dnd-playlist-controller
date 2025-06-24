@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/zmb3/spotify/v2"
 	spotifyauth "github.com/zmb3/spotify/v2/auth"
@@ -19,14 +20,17 @@ var (
 )
 
 func New() (*spotify.Client, error) {
-	auth = spotifyauth.New(spotifyauth.WithRedirectURL(redirectURI), spotifyauth.WithScopes(spotifyauth.ScopeUserReadPrivate, spotifyauth.ScopeUserModifyPlaybackState))
+	auth = spotifyauth.New(
+		spotifyauth.WithRedirectURL(redirectURI),
+		spotifyauth.WithScopes(spotifyauth.ScopeUserReadPrivate, spotifyauth.ScopeUserModifyPlaybackState),
+	)
 
 	// try to load an existing user from token.json if it exists
 	existingClient, err := clientFromExistingToken()
 	if err == nil && existingClient != nil {
 		return existingClient, nil
 	}
-	fmt.Printf("Couldn't get an existing client :( have to make new one: %s \n", err)
+	fmt.Printf("Couldn't get an existing client: %s \n", err)
 
 	return clientFromNewToken()
 }
@@ -48,13 +52,12 @@ func clientFromExistingToken() (*spotify.Client, error) {
 }
 
 func clientFromNewToken() (*spotify.Client, error) {
-	// To get the auth we need to allow spotify to redirect the user to our server, which is very cringe btw
+	// To get the auth we need to allow spotify to redirect the user to our server
 	srv := &http.Server{Addr: ":8080", Handler: nil}
 	http.HandleFunc("/callback", completeAuth)
 	go func() {
-		err := srv.ListenAndServe()
-		if err != nil {
-			log.Fatal(err)
+		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			log.Fatalf("Failed to serve auth page: %v", err)
 		}
 	}()
 
@@ -63,8 +66,13 @@ func clientFromNewToken() (*spotify.Client, error) {
 
 	// wait for auth to complete
 	client := <-ch
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
 
-	// use the client to make calls that require authorization
+	if err := srv.Shutdown(ctx); err != nil {
+		log.Fatalf("Failed to shut down server: %v", err)
+	}
+
 	user, err := client.CurrentUser(context.Background())
 	if err != nil {
 		return nil, err

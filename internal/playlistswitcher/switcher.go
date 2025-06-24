@@ -12,11 +12,6 @@ type Switcher struct {
 	ctx    context.Context
 }
 
-// empty switcher, used for debugging
-func FakeSwitcher() *Switcher {
-	return &Switcher{ctx: context.Background()}
-}
-
 func NewSwitcher(client *spotify.Client) *Switcher {
 	return &Switcher{client: client, ctx: context.Background()}
 }

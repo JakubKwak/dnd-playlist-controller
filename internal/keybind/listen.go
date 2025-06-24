@@ -51,7 +51,7 @@ func listenHotkey(key *Keybind) error {
 		select {
 		case <-hk.Keydown():
 			key.Handle()
-		case <-sigChan: // If exit signal is received, exit cleanly
+		case <-sigChan:
 			return nil
 		default:
 			time.Sleep(100 * time.Millisecond)

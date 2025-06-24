@@ -19,15 +19,15 @@ func getModMap() map[string]hotkey.Modifier {
 
 func getKeyMap() map[string]hotkey.Key {
 	keyMap := map[string]hotkey.Key{}
-	// Add numbers 0-9
+	// Numbers 0-9
 	for i := 0; i <= 9; i++ {
 		keyMap[fmt.Sprintf("%d", i)] = hotkey.Key(0x30 + i)
 	}
-	// Add letters A-Z
+	// Letters A-Z
 	for i := 'A'; i <= 'Z'; i++ {
 		keyMap[string(i)] = hotkey.Key(i)
 	}
-	// Add function keys F1-F20
+	// Function keys F1-F20
 	for i := 1; i <= 20; i++ {
 		keyMap[fmt.Sprintf("F%d", i)] = hotkey.Key(0x70 + (i - 1))
 	}

@@ -32,7 +32,6 @@ To build and run manually:
 ### WINDOWS:
 
 Run run-win.bat from console or by double-clicking.
-To rebuild, use build-win.bat.
 
 Or rebuild and run manually with:
 
@@ -44,7 +43,6 @@ go build -o bin\win-dpc.exe .\cmd\dnd-playlist-controller-win
 ### MAC:
 
 Run run-mac.sh from a terminal window.
-To rebuild, use build-mac.sh.
 
 Or rebuild and run manually with:
 
