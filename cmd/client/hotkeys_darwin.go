@@ -1,3 +1,5 @@
+//go:build darwin
+
 package main
 
 import (
@@ -11,9 +13,11 @@ import (
 func getModMap() map[string]hotkey.Modifier {
 	return map[string]hotkey.Modifier{
 		"OPTION": hotkey.ModOption,
+		"ALT":    hotkey.ModOption,
 		"CTRL":   hotkey.ModCtrl,
 		"SHIFT":  hotkey.ModShift,
 		"CMD":    hotkey.ModCmd,
+		"WIN":    hotkey.ModCmd,
 	}
 }
 

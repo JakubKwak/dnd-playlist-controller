@@ -1,0 +1,12 @@
+name: dnd-playlist-controller
+services:
+  dnd-playlist-controller-server:
+    image: dnd-playlist-controller-server:latest
+    ports:
+      - 8080:8080
+    deploy:
+      restart_policy:
+        condition: unless-stopped
+    env_file:
+      - .env
+

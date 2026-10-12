@@ -1,0 +1,75 @@
+name: Release Client Binaries
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build (${{ matrix.os_name }}-${{ matrix.goarch }})
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: macos-latest
+            os_name: macos
+            goos: darwin
+            goarch: arm64
+            binary: dnd-playlist-controller
+          - runner: macos-latest
+            os_name: macos
+            goos: darwin
+            goarch: amd64
+            binary: dnd-playlist-controller
+          - runner: windows-latest
+            os_name: windows
+            goos: windows
+            goarch: amd64
+            binary: dnd-playlist-controller.exe
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      - name: Build client binary
+        shell: bash
+        env:
+          CGO_ENABLED: "1"
+          GOOS: ${{ matrix.goos }}
+          GOARCH: ${{ matrix.goarch }}
+        run: |
+          mkdir -p dist
+          go build -o "dist/${{ matrix.binary }}" ./cmd/client
+          cp hotkeys-example.json dist/hotkeys.json
+          cp README.md dist/README.md
+
+      - name: Package release archive
+        shell: bash
+        run: |
+          cd dist
+          7z a "../dnd-playlist-controller-${{ matrix.os_name }}-${{ matrix.goarch }}.zip" "${{ matrix.binary }}" hotkeys.json README.md
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dnd-playlist-controller-${{ matrix.os_name }}-${{ matrix.goarch }}
+          path: dnd-playlist-controller-${{ matrix.os_name }}-${{ matrix.goarch }}.zip
+
+      - name: Publish to GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dnd-playlist-controller-${{ matrix.os_name }}-${{ matrix.goarch }}.zip
+          generate_release_notes: true
+

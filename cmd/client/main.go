@@ -4,16 +4,18 @@ import (
 	"dnd-playlist-controller/internal/keybind"
 	"dnd-playlist-controller/internal/playlistswitcher"
 	"dnd-playlist-controller/internal/spotifyclient"
-	"fmt"
 	"log"
+	"os"
+	"path/filepath"
 
 	"github.com/joho/godotenv"
 )
 
 func main() {
-	if err := godotenv.Load(".env"); err != nil {
-		error(fmt.Sprintf("Could not load env: %s", err))
-	}
+	chdirToExecutableIfNeeded()
+
+	// Optional: load .env if present (e.g. to override AUTH_SERVER_URL when self-hosting)
+	_ = godotenv.Load(".env")
 
 	client, err := spotifyclient.New()
 	if err != nil {
@@ -31,6 +33,22 @@ func main() {
 	}
 
 	keybind.Register(hotkeys)
+}
+
+// chdirToExecutableIfNeeded switches the working directory to the executable's directory
+// when hotkeys.json isn't found in the current working directory (e.g. when double-clicking the binary).
+func chdirToExecutableIfNeeded() {
+	if _, err := os.Stat("hotkeys.json"); err == nil {
+		return
+	}
+	exePath, err := os.Executable()
+	if err != nil {
+		return
+	}
+	exeDir := filepath.Dir(exePath)
+	if _, err := os.Stat(filepath.Join(exeDir, "hotkeys.json")); err == nil {
+		_ = os.Chdir(exeDir)
+	}
 }
 
 func error(err string) {
