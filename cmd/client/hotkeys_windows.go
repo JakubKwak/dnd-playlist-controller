@@ -12,10 +12,12 @@ import (
 
 func getModMap() map[string]hotkey.Modifier {
 	return map[string]hotkey.Modifier{
-		"ALT":   hotkey.ModAlt,
-		"CTRL":  hotkey.ModCtrl,
-		"SHIFT": hotkey.ModShift,
-		"WIN":   hotkey.ModWin,
+		"ALT":    hotkey.ModAlt,
+		"OPTION": hotkey.ModAlt,
+		"CTRL":   hotkey.ModCtrl,
+		"SHIFT":  hotkey.ModShift,
+		"WIN":    hotkey.ModWin,
+		"CMD":    hotkey.ModWin,
 	}
 }
 

@@ -1,35 +1,31 @@
 # dnd-playlist-controller
-Small app to allow playlist switching using hotkeys for running my DND campaign.
+Small app to allow playlist switching using system hotkeys for running my DND campaign.
 
 ## Requirements
 - Windows or Mac (Linux currently not supported)
 - A Spotify Premium account (required by Spotify's API to control playback)
 
 ## Usage
-Create a `hotkeys.json` file (see `hotkeys-example.json`) in the root folder to bind hotkeys to playlists. Format:
+1. Download the latest release for your OS from the **Releases** page and extract the `.zip`.
+2. Edit `hotkeys.json` (see `hotkeys-example.json`) in the same folder as the executable to bind hotkeys to your Spotify playlists:
 ```json
 [
     {
-        "uri": "4pxn3LHWRCd...", /* Spotify playlist ID/URI */
-        "modifiers": [ /* Array of modifiers */
+        "uri": "4pxn3LHWRCd...", /* Spotify playlist ID */
+        "modifiers": [ /* Supported: Ctrl, Shift, Alt / Option, Win / Cmd */
             "Ctrl",
             "Alt",
-            "Shift",
-            "Win"
+            "Shift"
         ],
-        "key": "6" /* Main key */
+        "key": "6" /* Main key: 0-9, A-Z, or F1-F20 */
     }
 ]
 ```
-
-### Running the App
-
-- **Windows**: Run `run-win.bat` from console or by double-clicking (`.\bin\win-dpc.exe`).
-- **Mac**: Run `run-mac.sh` from a terminal window (`./bin/mac-dpc`), or double-click `dnd-playlist-controller.command`.
+3. Run the executable (`dnd-playlist-controller.exe` on Windows or `./dnd-playlist-controller` on Mac).
 
 The first time you run the executable it will print a URL in the console window. Copy + paste it into your browser and log in with your Spotify account. Once done and you see the confirmation webpage, you can close the browser.
 
-To avoid having to do this every time, the auth token is saved in a JSON file in the root folder (`token.json`). If the auth ever breaks or you wish to switch to a different account, just delete that file.
+To avoid having to do this every time, the auth token is saved in a JSON file alongside the executable (`token.json`). If the auth ever breaks or you wish to switch to a different account, just delete that file.
 
 ---
 
@@ -38,14 +34,14 @@ If you want to compile the client binary yourself, you'll need Go 1.22.1+:
 
 ### Windows:
 ```powershell
-go build -o bin\win-dpc.exe .\cmd\client
-.\bin\win-dpc.exe
+go build -o bin\dnd-playlist-controller.exe .\cmd\client
+.\bin\dnd-playlist-controller.exe
 ```
 
 ### Mac:
 ```sh
-go build -a -o bin/mac-dpc ./cmd/client
-./bin/mac-dpc
+go build -o bin/dnd-playlist-controller ./cmd/client
+./bin/dnd-playlist-controller
 ```
 
 ---

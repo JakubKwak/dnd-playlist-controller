@@ -26,7 +26,7 @@ func registerHotkeys(keys []*Keybind) {
 			defer wg.Done()
 			err := listenHotkey(key)
 			if err != nil {
-				fmt.Printf("Error registering hotkey (%s): %s", key.FriendlyName, err)
+				fmt.Printf("Error registering hotkey (%s): %s\n", key.FriendlyName, err)
 			}
 		}()
 	}
@@ -39,7 +39,7 @@ func listenHotkey(key *Keybind) error {
 
 	err := hk.Register()
 	if err != nil {
-		return nil
+		return err
 	}
 	defer hk.Unregister()
 	fmt.Printf("Listening for hotkey: %s\n", key.FriendlyName)
