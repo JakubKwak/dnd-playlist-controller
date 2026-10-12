@@ -18,7 +18,7 @@ import (
 )
 
 const (
-	defaultAuthServerURL = "http://localhost:8080"
+	defaultAuthServerURL = "https://dnd-playlist-controller.jakubkwak.com"
 	pollInterval         = 2 * time.Second
 	pollTimeout          = 10 * time.Minute
 	httpTimeout          = 15 * time.Second
