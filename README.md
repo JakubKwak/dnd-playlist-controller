@@ -63,11 +63,12 @@ If you want to host your own OAuth relay server:
    REDIRECT_URI=https://your-domain.com/callback
    LISTEN_ADDR=:8080
    ```
-3. Build and run the server binary:
+3. Run the server using Docker Compose (or build the Go binary directly):
    ```sh
-   go build -o bin/auth-server ./cmd/server
-   ./bin/auth-server
+   docker build -t dnd-playlist-controller-server:latest .
+   docker compose up -d
    ```
+   *(Or without Docker: `go build -o bin/auth-server ./cmd/server && ./bin/auth-server`)*
 4. On your local machine, create a `.env` file alongside the client executable to point it at your server:
    ```env
    AUTH_SERVER_URL=https://your-domain.com
