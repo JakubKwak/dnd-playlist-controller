@@ -4,16 +4,14 @@ import (
 	"dnd-playlist-controller/internal/keybind"
 	"dnd-playlist-controller/internal/playlistswitcher"
 	"dnd-playlist-controller/internal/spotifyclient"
-	"fmt"
 	"log"
 
 	"github.com/joho/godotenv"
 )
 
 func main() {
-	if err := godotenv.Load(".env"); err != nil {
-		error(fmt.Sprintf("Could not load env: %s", err))
-	}
+	// Optional: load .env if present (e.g. to override AUTH_SERVER_URL when self-hosting)
+	_ = godotenv.Load(".env")
 
 	client, err := spotifyclient.New()
 	if err != nil {
